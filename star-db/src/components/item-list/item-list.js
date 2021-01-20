@@ -20,13 +20,16 @@ componentDidMount(){
         });
     });
 }
-renderItems (arr) {
-    return arr.map((e, id) => {
+
+renderItems(arr) {
+    return arr.map((item) => {
+        const { id } = item;
+        const label = this.props.renderItem(item);
         return(
             <li className='list-group-item'
-                key={id+1}
-                onClick = {() => this.props.onItemSelected(id+1)}> 
-                {e.name}
+                key={id}
+                onClick = {() => this.props.onItemSelected(id)}> 
+                {label}
             </li>
         )
     });
