@@ -4,11 +4,13 @@ import Header from './components/header/header';
 import PeoplePage from './components/people-page/people-page';
 import ItemList from './components/item-list/item-list';
 import RandomPlanet from './components/random-planet/random-planets';
-import PersonDetails from './components/person-details/person-details';
+import ItemDetails from './components/item-details/item-details';
 import StarShips from './components/straship-details/starship-details';
 import ErrorButton from './components/error-button/error-button';
 import ErrorIndicator from './components/error-indicator/error-indicator';
 import SwapiService from './services/swapi-service';
+import Row from './components/row/row';
+import ErrorBoundry from './components/error-boundry/error-boundry';
 
 export default class App extends Component {
 
@@ -42,22 +44,39 @@ export default class App extends Component {
       <RandomPlanet/> :
       null;
 
-    return (
+  const { getPerson, getStarship } = this.swapiService;
 
+    const personDetails = (
+      <ItemDetails itemId = {11}
+      />
+    );
+
+    const starshipDetails = (
+      <ItemDetails itemId = {5}
+      />
+    );
+
+    return (
+      <ErrorBoundry>
        <div className="stardb-app">
         <Header />
-        { planet }
+          { planet }
 
-        <button
+        <Row
+          left={personDetails}
+          right={starshipDetails}
+          />
+      
+        {/* <button
           className="toggle-planet btn btn-warning btn-lg"
           onClick={this.toggleRandomPlanet}>
           Toggle Random Planet
         </button>
-        <ErrorButton/>
-
-        <PeoplePage/>
+        <ErrorButton/> */}
+{/* 
+        <PeoplePage/> */}
         
-        <div className="row mb2">
+        {/* <div className="row mb2">
           <div className="col-md-6">
             <ItemList 
             onItemSelected = {this.onPersonSelected}
@@ -68,11 +87,11 @@ export default class App extends Component {
 
           </div>
           <div className="col-md-6">
-            <PersonDetails  personId = {this.state.selectedPerson}/>
+            <ItemDetails  personId = {this.state.selectedPerson}/>
           </div>     
-        </div>
+        </div> */}
 
-        <div className="row mb2">
+        {/* <div className="row mb2">
           <div className="col-md-6">
             <ItemList 
             onItemSelected = {this.onPersonSelected}
@@ -81,11 +100,12 @@ export default class App extends Component {
             </ItemList>
           </div>
           <div className="col-md-6">
-            <PersonDetails  personId = {this.state.selectedPerson}/>
+            <ItemDetails  personId = {this.state.selectedPerson}/>
           </div>     
-        </div>
+        </div> */}
 
       </div>
+      </ErrorBoundry>
     );
   }
 }

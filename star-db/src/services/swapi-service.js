@@ -37,15 +37,15 @@ getAllStarships = async () => {
     return res.results.map(this._transformStarship);
   }
 
- getStarship = async (id) => {
-    const starship = this.getResource(`/starships/${id}/`);
+  getStarship = async (id) => {
+    const starship = await this.getResource(`/starships/${id}/`);
     return this._transformStarship(starship);
-  }
+  };
 
-  _extractId(item) {
+  _extractId = (item) => {
     const idRegExp = /\/([0-9]*)\/$/;
     return item.url.match(idRegExp)[1];
-  }
+  };
 
   _transformPlanet =(planet) => {
     return {
