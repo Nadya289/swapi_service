@@ -46,7 +46,10 @@ export default class App extends Component {
       <ItemDetails 
       itemId = {11}
       getData = {getPerson}
-      getImageUrl = {getPersonImage}/>
+      getImageUrl = {getPersonImage}>
+        <Record field = 'gender' label = 'Gender:'/>
+        <Record field='eyeColor' label ='Eye Color:'/>
+      </ItemDetails>
     );
 
     const starshipDetails = (
@@ -54,8 +57,9 @@ export default class App extends Component {
       itemId = {5}
       getData = {getStarship}
       getImageUrl = {getStarshipImage}>
-        <Record field = 'gender' label = 'Gender'/>
-        <Record field='eyeColor' label ='Eye Color'/>
+        <Record field = 'model' label = 'Model:'/>
+        <Record field='length' label ='Length:'/>
+        <Record field='crew' label ='Crew'/>
 
       </ItemDetails>
      
