@@ -5,12 +5,26 @@ import ErrorIndicator from '../error-indicator/error-indicator';
 import ErrorButton from '../error-button/error-button';
 import './item-details.css';
 
+const Record = ({ item, field, label }) => {
+    return (
+      <li className="list-group-item">
+        <span className="term">{label}</span>
+        <span>{ field }</span>
+      </li>
+    );
+  };
+  
+  export {
+    Record
+  };
+
 export default class ItemDetails extends Component{
     swapiService = new SwapiService();
 
     state = {
-        item: null,
-        loading:true,
+        item:null,
+        loading:false,
+        image: null,
         error: false
     };
 
@@ -18,7 +32,7 @@ export default class ItemDetails extends Component{
         this.updateItem();
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate =(prevProps)=> {
         if(this.props.itemId !== prevProps.itemId){
             this.updateItem();
         }
@@ -35,31 +49,54 @@ export default class ItemDetails extends Component{
           error:true,
           loading:false
         });
-      };
+      }
 
-    updateItem(){
-        const {itemId, getData} = this.props;
-        if(!itemId) {
-            return;
+      updateItem = () => {
+        const {itemId, getData, getImageUrl} = this.props;
+        if (!itemId) {
+          return;
         }
-        this.swapiService
-        .getPerson(itemId)
-        .then(this.onItemLoaded)
-        .catch(this.onError);
+        getData(itemId)
+        .then((item) => {
+            const res={id:itemId}
+            this.setState({ item:item, image:getImageUrl(res)})
+          });
+      }
         
         // .then((person) => {
         //     this.setState({person});
         // });
-    }
+
     
     render(){
 
-        const {item, loading, error} = this.state;
+        const ItemView = ({item,}) => {
+            const{name, id, image} = item;
+            return(
+                <React.Fragment>
+                     <img className ='person-image person-details'  
+                        src = {image}
+                        alt='pic'/>
+                <div className='card-body'> 
+                    <h4>{name}</h4>
+                    <ul className='list-group list-group-flush'>
+                        { 
+                            React.Children.map(this.props.children, (child)=>{
+                                return child;
+                            })
+                        }
+                    </ul>
+                    <ErrorButton/>
+                </div>
+                </React.Fragment>
+            );
+        }
+        const {item, loading, error, image} = this.state;
         const hasData = !(loading|| error);
 
         const errorMessage = error ? <ErrorIndicator/> : null;
         const spinner = loading ? <Spinner/> : null;
-        const content = hasData ? <ItemView item = {item}/> : null; 
+        const content = hasData ? <ItemView item = {item} image= {image}/> : null; 
 
         if(!this.state.item){
             return <span> Select a person from a list</span>
@@ -78,30 +115,3 @@ export default class ItemDetails extends Component{
     };
 };
 
-const ItemView = ({item}) => {
-    const{name, gender, birthYear, eyeColor, id} = item;
-    return(
-        <React.Fragment>
-             <img className ='person-image person-details'  
-                src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`}/>
-        <div> 
-            <h4>{name}</h4>
-            <ul className='list-group list-group-flush'>
-                <li className='list-group-item'>
-                    <span className="term">Gender</span>
-                    <span>{gender}</span> 
-                </li>
-                <li className='list-group-item'>
-                    <span className="term">Birth Year</span>
-                    <span>{birthYear}</span> 
-                </li>
-                <li className='list-group-item'>
-                    <span className="term">Eye Color</span>
-                    <span>{eyeColor}</span>
-                </li>
-            </ul>
-            <ErrorButton/>
-        </div>
-        </React.Fragment>
-    );
-}

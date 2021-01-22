@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Header from './components/header/header';
-import PeoplePage from './components/people-page/people-page';
-import ItemList from './components/item-list/item-list';
 import RandomPlanet from './components/random-planet/random-planets';
-import ItemDetails from './components/item-details/item-details';
-import StarShips from './components/straship-details/starship-details';
-import ErrorButton from './components/error-button/error-button';
+import ItemDetails, {Record} from './components/item-details/item-details';
 import ErrorIndicator from './components/error-indicator/error-indicator';
 import SwapiService from './services/swapi-service';
 import Row from './components/row/row';
@@ -44,16 +40,25 @@ export default class App extends Component {
       <RandomPlanet/> :
       null;
 
-  const { getPerson, getStarship } = this.swapiService;
+  const { getPerson, getStarship, getPersonImage, getStarshipImage} = this.swapiService;
 
     const personDetails = (
-      <ItemDetails itemId = {11}
-      />
+      <ItemDetails 
+      itemId = {11}
+      getData = {getPerson}
+      getImageUrl = {getPersonImage}/>
     );
 
     const starshipDetails = (
-      <ItemDetails itemId = {5}
-      />
+      <ItemDetails 
+      itemId = {5}
+      getData = {getStarship}
+      getImageUrl = {getStarshipImage}>
+        <Record field = 'gender' label = 'Gender'/>
+        <Record field='eyeColor' label ='Eye Color'/>
+
+      </ItemDetails>
+     
     );
 
     return (

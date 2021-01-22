@@ -47,7 +47,7 @@ export default class RandomPlanet extends Component{
         .catch(this.onError);
     };
   
-    render() {
+    render(){
       const { planet, loading,error } = this.state;
 
       const hasData = !(loading || error);
